@@ -1,5 +1,5 @@
 {
-  "homepage": "http://valubehrend1.github.io/uep/",
+  "homepage": "https://uep.herokuapp.com/",
   "proxy": "http://localhost:3001",
   "name": "uep-page",
   "version": "0.1.0",
