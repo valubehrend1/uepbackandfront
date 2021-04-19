@@ -1,30 +1,33 @@
 const nodeMailer = require('nodemailer');
 
+
 module.exports = {
 
-    email: function (req, res, next) {
-        const user = {
-            nameForm: req.body.nameForm,
-            email: req.body.email,
-            phone: req.body.phone,
-            file: req.body.file,
-            option: req.body.option,
-            asunto: req.body.asunto,
-        };
-        console.log('Data: ', req.body)
 
-        const transporter = nodeMailer.createTransport({
-            host: 'mail.privateemail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: 'info@uep-es.com',
-                pass: 'Ff963852741'
-            }
-        })
+    email: async function (req, res, next) {
+        try {
+            const user = {
+                nameForm: req.body.nameForm,
+                email: req.body.email,
+                phone: req.body.phone,
+                file: req.body.file,
+                option: req.body.option,
+                asunto: req.body.asunto,
+            };
+            console.log('Data: ', req.body)
 
-        const fieldheader =
-            `
+            const transporter = nodeMailer.createTransport({
+                host: 'mail.privateemail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    user: 'info@uep-es.com',
+                    pass: 'Ff963852741'
+                }
+            })
+
+            const fieldheader = 
+                `
                 <html>
                 <head>
                     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -43,21 +46,25 @@ module.exports = {
                 </body>
                 </html>
                 `
-        var message = {
-            from: 'info@uep-es.com',
-            to: 'info@uep-es.com',
-            replyTo: user.email,
-            subject: user.option,
-            html: fieldheader,
-            attachments: req.file ? [
-                {
-                    filename: req.file.originalname,
-                    content: Buffer.alloc(req.file.size, req.file.buffer, req.file.enconding)
-                }
-            ] : null
-        };
+            var message = {
+                from: 'info@uep-es.com',
+                to: 'info@uep-es.com',
+                replyTo: user.email,
+                subject: user.option,
+                html: fieldheader,
+                attachments: req.file ? [
+                    {
+                        filename: req.file.originalname,
+                        content: Buffer.alloc(req.file.size, req.file.buffer, req.file.enconding)
+                    }
+                ] : null
+            };
 
-        transporter.sendMail(message)
-        res.json(true);
+            transporter.sendMail(message)
+            res.json(true);
+
+        } catch (e) {
+            console.log('Exception Create Category', e);
+        };
     },
 }
